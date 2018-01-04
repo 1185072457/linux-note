@@ -1,0 +1,212 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>6 表达式 &#8212; linux-note v1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'v1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="7 模式动作和变量" href="模式动作和变量.html" />
+    <link rel="prev" title="5 打印输出" href="打印输出.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="id1">
+<h1>6 表达式<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id2">
+<h2>6.1 常量表达式<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id3">
+<h3>6.1.1 数字和字符串常量<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="m">105</span>
+<span class="s2">&quot;abc&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h3>6.1.2 正则表达式常量<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="o">(</span><span class="nv">$0</span> ~ /barfly/ <span class="o">||</span> <span class="nv">$0</span> ~ /camelot/<span class="o">)</span>
+    print <span class="s2">&quot;found&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id5">
+<h3>6.1.3 自定义的变量<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<p>awk作为一个编程语言，变量的支持那是必须的啊。</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="o">[</span>root@centos74 test<span class="o">]</span>$ awk -v <span class="nv">a</span><span class="o">=</span><span class="s2">&quot;test&quot;</span> <span class="s1">&#39;BEGIN{print a}&#39;</span>
+<span class="nb">test</span>
+</pre></div>
+</div>
+<p>自定的变量可以使用命令行方式， 也是可以在BEGIN里面去定义。</p>
+</div>
+</div>
+<div class="section" id="id6">
+<h2>6.2 使用表示式<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id7">
+<h3>6.2.1 算数操作<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<p>awk对算数的支持也是每常完美的</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="o">[</span>root@centos74 test<span class="o">]</span>$ vim grades
+<span class="o">[</span>root@centos74 test<span class="o">]</span>$ cat grades
+Pat   <span class="m">100</span> <span class="m">97</span> <span class="m">58</span>
+Sandy  <span class="m">84</span> <span class="m">72</span> <span class="m">93</span>
+Chris  <span class="m">72</span> <span class="m">92</span> <span class="m">89</span>
+<span class="o">[</span>root@centos74 test<span class="o">]</span>$ awk <span class="s1">&#39;{sum=$2+$3+$3; avg=sum/3; print $1,avg}&#39;</span> grades
+Pat <span class="m">98</span>
+Sandy <span class="m">76</span>
+Chris <span class="m">85</span>.3333
+</pre></div>
+</div>
+</div>
+<div class="section" id="id8">
+<h3>6.2.2 字符串操作<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<p>字符串主要是拼接， 直接写你要拼接的字符串即可。类似bash，不想python语言字符串莱娜姐需要连接符“+”   。</p>
+</div>
+<div class="section" id="id9">
+<h3>6.2.3 赋值表达式<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<p>赋值是比较简单的 a=”abd” 即可。</p>
+</div>
+<div class="section" id="id10">
+<h3>6.2.4 自增表达式<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<p>这个用法和c语言是一样的。使用`b++`即可完成b变量的自增，</p>
+</div>
+</div>
+<div class="section" id="id11">
+<h2>6.3 判定表达式<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id12">
+<h3>6.3.1 字符串和数值的判定表达式<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
+<p>awk中对真假的判定是这样的。 数值类如果是0 就是False, 非0就是True。字符串类如果是没有设置的话就是False,其他为True。</p>
+</div>
+<div class="section" id="id13">
+<h3>6.3.2 比较判定表达式<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
+<p>就是常用大于等于小于这些判定</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">在字符串比较的时候，是按照首字母比较的，如果相同继续比较下一个字母，而非字母长度比较。</p>
+</div>
+</div>
+<div class="section" id="id14">
+<h3>6.3.3 三目表达式<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h3>
+<p>直接给样例</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="o">[</span>root@centos74 test<span class="o">]</span>$ awk <span class="s1">&#39;BEGIN{a=-1;b= a &lt;=0 ?(++a):a; print b}&#39;</span>
+<span class="m">0</span>
+<span class="o">[</span>root@centos74 test<span class="o">]</span>$ awk <span class="s1">&#39;BEGIN{a=1;b= a &lt;=0 ?(++a):a; print b}&#39;</span>
+<span class="m">1</span>
+</pre></div>
+</div>
+<p>如果添加成立，就执行第一个语句，否则第二个。 三目表达式是一个ifelse语句的简单写法。</p>
+</div>
+</div>
+<div class="section" id="id15">
+<h2>6.4 函数<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h2>
+<p>awk 内置一些常用函数，比如计算字符串长度（length）,去平方根的函数（sqrt）等等。</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">linux-note</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">awk语言</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="简介.html">1 简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="运行awk.html">2 运行awk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="正则表达式.html">3 正则表达式</a></li>
+<li class="toctree-l1"><a class="reference internal" href="读取输入文件.html">4 读取输入文件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="打印输出.html">5 打印输出</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">6 表达式</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">6.1 常量表达式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">6.2 使用表示式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id11">6.3 判定表达式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id15">6.4 函数</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="模式动作和变量.html">7 模式动作和变量</a></li>
+<li class="toctree-l1"><a class="reference internal" href="数组.html">8 数组</a></li>
+<li class="toctree-l1"><a class="reference internal" href="函数.html">9 函数</a></li>
+</ul>
+<p class="caption"><span class="caption-text">常用问题解决</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../常用问题解决/awk库函数.html">1 awk库函数</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../常用问题解决/awk实用程序.html">2 awk实用程序</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="打印输出.html" title="previous chapter">5 打印输出</a></li>
+      <li>Next: <a href="模式动作和变量.html" title="next chapter">7 模式动作和变量</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, xiaojun.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/awk语言/表达式.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
